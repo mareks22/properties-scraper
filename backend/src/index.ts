@@ -8,7 +8,7 @@ import { getPropertiesForSellAndForRent } from "./helper";
 
 export const pool = new Pool({
   user: "postgres",
-  host: "localhost",
+  host: "database",
   database: "scrap_db",
   password: "admin",
   port: 5432,
