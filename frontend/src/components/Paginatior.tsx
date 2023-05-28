@@ -23,27 +23,15 @@ export default function Paginator(props: Props) {
   }, [props.totalItems, props.itemsPerPage]);
 
   const [pageNumbers, setPageNumbers] = useState<number[]>([]);
-  const [lastPageToShow, setLastPageToShow] = useState(6)
+  const [lastPageToShow, setLastPageToShow] = useState(6);
 
   useEffect(() => {
     setPageNumbers(allPageNumbers.slice(0, 6));
   }, [allPageNumbers]);
 
   function calcPagesToShow(clicked: number) {
-    // console.log("current", clicked);
-    // console.log("pageNumbers[9]", pageNumbers[9]);
     if (clicked === pageNumbers[5]) {
-      setLastPageToShow(pageNumbers[5])
-      // console.log("entered if");
-
-      console.log(
-        "pageNumbers.indexOf(lastPageToShow):",
-        pageNumbers.indexOf(lastPageToShow)
-      );
-      console.log(
-        "pageNumbers.indexOf(lastPageToShow + 3):",
-        pageNumbers.indexOf(lastPageToShow + 3)
-      );
+      setLastPageToShow(pageNumbers[5]);
       const pagesToAdd = [
         ...allPageNumbers.slice(
           allPageNumbers.indexOf(lastPageToShow),
@@ -51,7 +39,6 @@ export default function Paginator(props: Props) {
         ),
       ];
 
-      console.log('pagesToAdd:', pagesToAdd)
       setPageNumbers([
         1,
         ...pageNumbers.slice(pageNumbers[3], pageNumbers[4]),
@@ -65,16 +52,28 @@ export default function Paginator(props: Props) {
     calcPagesToShow(number);
   }
 
+  function pageMoveWithArrow(up: boolean) {
+    if (up) {
+      const nextPage = props.currentPage + 1;
+      props.onPageChange(nextPage);
+      calcPagesToShow(nextPage);
+    } else {
+      const prevPage = props.currentPage - 1;
+      props.onPageChange(prevPage);
+      calcPagesToShow(prevPage);
+    }
+  }
+
   //calcPagesToShow();
 
   return (
     <nav className="wrapper">
       <button
         disabled={props.currentPage == 1}
-        onClick={() => props.onPageChange(props.currentPage - 1)}
+        onClick={() => pageMoveWithArrow(false)}
         className="paginator-buttons"
       >
-        {"<"}{" "}
+        {"<"}
       </button>
       <ul className="paginator-pages">
         {pageNumbers.map((number) => (
@@ -92,10 +91,13 @@ export default function Paginator(props: Props) {
         ))}
       </ul>
       <button
-        onClick={() => props.onPageChange(props.currentPage + 1)}
+        disabled={
+          props.currentPage == allPageNumbers[allPageNumbers.length - 1]
+        }
+        onClick={() => pageMoveWithArrow(true)}
         className="paginator-buttons"
       >
-        {">"}{" "}
+        {">"}
       </button>
     </nav>
   );

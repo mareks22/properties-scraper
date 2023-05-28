@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/Header";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import RentListings from "./pages/RentListings";
 import SellListings from "./pages/SellListings";
 
@@ -47,7 +47,11 @@ function App() {
       <ListingsContext.Provider value={{ propertiesToSell, propertiesToRent }}>
         <Header />
         <Routes>
-          <Route path="/" element={<RentListings />}></Route>
+          <Route path="/">
+            {/* redirect when opening page at '/' route */}
+            <Navigate to="/rent" /> : <RentListings />
+          </Route>
+          <Route path="/rent" element={<RentListings />}></Route>
           <Route path="/sell" element={<SellListings />}></Route>
         </Routes>
         <Paginator
