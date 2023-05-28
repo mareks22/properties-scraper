@@ -29,6 +29,11 @@ function App() {
   );
 
   function handlePageChange(pageNumber: number) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
     setCurrentPage(pageNumber);
   }
 
@@ -46,14 +51,15 @@ function App() {
     <>
       <ListingsContext.Provider value={{ propertiesToSell, propertiesToRent }}>
         <Header />
-        <Routes>
-          <Route path="/">
-            {/* redirect when opening page at '/' route */}
-            <Navigate to="/rent" /> : <RentListings />
-          </Route>
-          <Route path="/rent" element={<RentListings />}></Route>
-          <Route path="/sell" element={<SellListings />}></Route>
-        </Routes>
+        {propertiesToSell.length > 0 ? (
+          <Routes>
+            <Route path="/" element={<Navigate to="/rent" />}></Route>
+            <Route path="/rent" element={<RentListings />}></Route>
+            <Route path="/sell" element={<SellListings />}></Route>
+          </Routes>
+        ) : (
+          <p className="no-items">No properties to show</p>
+        )}
         <Paginator
           itemsPerPage={itemsPerPage}
           totalItems={allPropertiesToSell.length}

@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function Paginator(props: Props) {
-  //let pageNumbers: number[] = [];
   const allPageNumbers = useMemo(() => {
     const numbers = [];
     for (
@@ -23,26 +22,27 @@ export default function Paginator(props: Props) {
   }, [props.totalItems, props.itemsPerPage]);
 
   const [pageNumbers, setPageNumbers] = useState<number[]>([]);
-  const [lastPageToShow, setLastPageToShow] = useState(6);
 
   useEffect(() => {
-    setPageNumbers(allPageNumbers.slice(0, 6));
+    setPageNumbers(allPageNumbers.slice(0, 4));
   }, [allPageNumbers]);
 
   function calcPagesToShow(clicked: number) {
-    if (clicked === pageNumbers[5]) {
-      setLastPageToShow(pageNumbers[5]);
-      const pagesToAdd = [
-        ...allPageNumbers.slice(
-          allPageNumbers.indexOf(lastPageToShow),
-          allPageNumbers.indexOf(lastPageToShow + 3)
-        ),
-      ];
-
+    if (clicked === pageNumbers[3]) {
       setPageNumbers([
         1,
-        ...pageNumbers.slice(pageNumbers[3], pageNumbers[4]),
-        ...pagesToAdd,
+        pageNumbers[3] - 1,
+        pageNumbers[3],
+        pageNumbers[3] + 1,
+      ]);
+    }
+
+    if (clicked === pageNumbers[1] && pageNumbers[1] !== 2) {
+      setPageNumbers([
+        1,
+        pageNumbers[1] - 1,
+        pageNumbers[1],
+        pageNumbers[1] + 1,
       ]);
     }
   }
@@ -50,9 +50,11 @@ export default function Paginator(props: Props) {
   function handlePageClick(number: number) {
     props.onPageChange(number);
     calcPagesToShow(number);
+
   }
 
   function pageMoveWithArrow(up: boolean) {
+
     if (up) {
       const nextPage = props.currentPage + 1;
       props.onPageChange(nextPage);

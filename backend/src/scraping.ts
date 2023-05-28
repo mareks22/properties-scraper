@@ -14,7 +14,6 @@ const entries = 200;
 
 export async function scrapeWebsite(
   url: string,
-  currentPage = 1,
   currentScrapedProperties: Property[] = []
 ): Promise<Property[]> {
   const browser = await puppeteer.launch({
@@ -27,14 +26,9 @@ export async function scrapeWebsite(
   await page.goto(url, { waitUntil: "networkidle2" });
 
   while (currentScrapedProperties.length < entries) {
-    console.log("current url:", page.url());
-    
     const pageContent = await page.content();
     const $ = cheerio.load(pageContent);
     const properties = $("div.property");
-    
-    console.log("properties first page:", properties.length);
-
     properties.each((index, element) => {
       const $property = $(element);
       const imgUrl = $property.find("img").eq(0).attr("src");
@@ -56,46 +50,20 @@ export async function scrapeWebsite(
         url: fullUrl || "",
       });
 
-      console.log(
-        `Scraped properties: ${
-          currentScrapedProperties.length - 1
-        } / ${entries} `
-      );
+      if (currentScrapedProperties.length <= entries) {
+        console.log("Scraped properties:", currentScrapedProperties.length);
+      }
     });
 
     const nextPageLink = $("li.paging-item a.icon-arr-right").attr("href");
-    if(nextPageLink){
+    if (nextPageLink) {
       const nextPageUrl = new URL(nextPageLink, url).href;
 
-      await page.goto(nextPageUrl, { waitUntil: "networkidle2" })
+      await page.goto(nextPageUrl, { waitUntil: "networkidle2" });
     }
-    // const nextPageLink = await page.waitForSelector(
-    //   "li.paging-item > a.icon-arr-right"
-    // );
-
-    // await nextPageLink?.click();
-
-
-
-
-    //await page.click('[class=icon-arr-right]')
   }
 
-  // const nextPageLink = $("li.paging-item a.icon-arr-right").attr("href");
-
-  // if (nextPageLink && currentScrapedProperties.length < entries) {
-  //   const nextPageUrl = new URL(nextPageLink, url).href;
-
-  //   console.log("next page link:", nextPageLink);
-  //   console.log("next page url:", nextPageUrl);
-
-  //   const nextPage = currentPage + 1;
-  //   console.log("Current page:", currentPage);
-  //   await scrapeWebsite(nextPageUrl, nextPage, currentScrapedProperties);
-  // } else {
-  //   console.log("Scraping complete.");
-  // }
   console.log("Scraping complete.");
   await browser.close();
-  return currentScrapedProperties;
+  return currentScrapedProperties.slice(0, entries);
 }
