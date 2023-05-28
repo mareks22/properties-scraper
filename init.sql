@@ -1,10 +1,6 @@
-DROP DATABASE IF EXISTS scrap_db; 
-
--- Create database
-CREATE DATABASE scrap_db;
 
 -- Connect to the newly created database
-\c scrap_db;
+\connect scrap_db;
 
 -- Create first table
 CREATE TABLE insertions_rent (
@@ -12,7 +8,8 @@ CREATE TABLE insertions_rent (
   img VARCHAR,
   price VARCHAR,
   title VARCHAR,
-  location VARCHAR
+  location VARCHAR,
+  url VARCHAR
 );
 
 -- Create first table
@@ -21,7 +18,8 @@ CREATE TABLE insertions_sell (
   img VARCHAR,
   price VARCHAR,
   title VARCHAR,
-  location VARCHAR
+  location VARCHAR,
+  url VARCHAR
 );
 
 -- -- Insert sample data
