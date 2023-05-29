@@ -96,12 +96,15 @@ export default function Paginator(props: Props) {
         {"<"}
       </button>
       <ul className="paginator-pages">
+        {pageNumbers[1] !== 2 ? <span className="dots">...</span> : null}
         {pageNumbers.map((number) => (
           <li key={number}>
             <button
               className={
                 "paginator-buttons " +
-                (props.currentPage == number ? "active" : "")
+                (props.currentPage == number ? "active " : " ") +
+                (pageNumbers[1] !== 2 && number == 1 ? "show-dots" : "")
+
               }
               onClick={() => handlePageClick(number)}
             >
