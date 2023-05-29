@@ -4,7 +4,7 @@ import cors from "cors";
 
 export const listingsRouter = Router();
 listingsRouter.use(cors())
-listingsRouter.get("/sell", (req, res: Response) => {
+listingsRouter.get("/sale", (req, res: Response) => {
   pool.query(
     "SELECT * FROM insertions_sell;",
     (error: Error, results: { rows: any }) => {

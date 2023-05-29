@@ -63,7 +63,7 @@ function App() {
 
   return (
     <>
-      <Header isLoading={isLoading} />
+      <Header resetPage={() => setCurrentPage(1)} isLoading={isLoading} />
       <ListingsContext.Provider value={{ propertiesToSell, propertiesToRent }}>
         {isLoading ? (
           <Loading />
@@ -72,7 +72,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/rent" />} />
               <Route path="/rent" element={<RentListings />} />
-              <Route path="/sell" element={<SellListings />} />
+              <Route path="/sale" element={<SellListings />} />
             </Routes>
 
             <Paginator

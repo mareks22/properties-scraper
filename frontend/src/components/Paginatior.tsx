@@ -28,7 +28,20 @@ export default function Paginator(props: Props) {
   }, [allPageNumbers]);
 
   function calcPagesToShow(clicked: number) {
-    if (clicked === pageNumbers[3]) {
+    const lastPage = allPageNumbers[allPageNumbers.length - 1];
+
+    if (clicked == 1) {
+      setPageNumbers(allPageNumbers.slice(0, 4));
+    }
+
+    if (clicked === lastPage) {
+      setPageNumbers([
+        1,
+        pageNumbers[3] - 2,
+        pageNumbers[3] - 1,
+        pageNumbers[3],
+      ]);
+    } else if (clicked === pageNumbers[3]) {
       setPageNumbers([
         1,
         pageNumbers[3] - 1,
@@ -50,11 +63,9 @@ export default function Paginator(props: Props) {
   function handlePageClick(number: number) {
     props.onPageChange(number);
     calcPagesToShow(number);
-
   }
 
   function pageMoveWithArrow(up: boolean) {
-
     if (up) {
       const nextPage = props.currentPage + 1;
       props.onPageChange(nextPage);
@@ -65,8 +76,6 @@ export default function Paginator(props: Props) {
       calcPagesToShow(prevPage);
     }
   }
-
-  //calcPagesToShow();
 
   return (
     <nav className="wrapper">

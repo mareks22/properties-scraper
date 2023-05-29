@@ -1,19 +1,32 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Header.scss";
 
 type Props = {
-  isLoading: boolean
-}
+  isLoading: boolean;
+  resetPage: () => void;
+};
 
 export default function Header(props: Props) {
+  const handleClick = () => {
+    props.resetPage();
+  };
+
   return (
     <div className="header">
-      <Link to="/rent">
-        <button disabled={props.isLoading} className="header__button">RENT</button>
-      </Link>
-      <Link to="/sell">
-        <button disabled={props.isLoading} className="header__button">SALE</button>
-      </Link>
+      <NavLink
+        onClick={handleClick}
+        className="header__nav"
+        to="/rent"
+      >
+        TO RENT
+      </NavLink>
+      <NavLink
+        onClick={handleClick}
+        className="header__nav"
+        to="/sale"
+      >
+        FOR SALE
+      </NavLink>
     </div>
   );
 }
