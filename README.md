@@ -12,6 +12,7 @@ Full-stack application that scarps properties listings in Prague, saves them on 
 Install docker if you don't have it yet.
 
 Download the zip file and open a terminal in the folder. Then run ``docker-compose up --build``
+After that frontend should be visible at ``http://localhost:8080``
 
 If you get the error: "unable to connect to deb.debian.org" you might need to restart your pc or the docker service.
 
