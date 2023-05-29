@@ -33,3 +33,15 @@
     }
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .card {
+    display: flex;
+    flex-direction: column;
+
+    &-img {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }  
+  }
+}
