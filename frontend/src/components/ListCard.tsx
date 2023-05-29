@@ -8,7 +8,7 @@ type Props = {
 export default function ListCard(props: Props) {
   return (
     <div className="card">
-      <a href={props.listing.url}>
+      <a className="card-img-url" href={props.listing.url}>
         <img className="card-img" src={props.listing.img} alt="home-image" />
       </a>
       <div className="card__info">
