@@ -50,43 +50,15 @@ const insertDataIntoDB = async (data: Property, type: "rent" | "sell") => {
   }
 };
 
-// export function getPropertiesForSell() {
-//     scrapeWebsite(sellUrl)
-//       .then((data) => {
-//         data.forEach((element) => {
-//           return insertDataIntoDB(element, "sell");
-//         });
-//       })
-//       .then(() => {
-//         console.log("Data inserted successfully.");
-//       })
-//       .catch((error: Error) => {
-//         console.error("Error inserting data:", error);
-//       });
-//   }
-//   export function getPropertiesForRent() {
-//     scrapeWebsite(rentUrl)
-//       .then((data) => {
-//         data.forEach((element) => {
-//           return insertDataIntoDB(element, "rent");
-//         });
-//       })
-//       .then(() => {
-//         console.log("Data inserted successfully.");
-//       })
-//       .catch((error: Error) => {
-//         console.error("Error inserting data:", error);
-//       });
-//   }
-  
-//   const insertDataIntoDB = async (data: Property, type: "rent" | "sell") => {
-//     const query = `INSERT INTO insertions_${type} (title, location, price, img, url) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-//     const values = [data.title, data.location, data.price, data.img, data.url];
-  
-//     pool.query(query, values, (error: Error, results) => {
-//       if (error) {
-//         throw error;
-//       }
-//       return results;
-//     });
-//   };
+export async function checkIfDataExist(): Promise<boolean> {
+  const query =
+    //"SELECT 1 FROM insertions_sell WHERE EXISTS (SELECT 1 FROM insertions_sell)";
+    "select exists (select * from insertions_sell) as data_exist;";
+  try {
+    const result = await pool.query(query);
+    return result.rows[0].data_exist as boolean
+  } catch (error) {
+    console.error("Error checking data existence:", error);
+    throw error;
+  }
+}

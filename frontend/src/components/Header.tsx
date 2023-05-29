@@ -1,14 +1,18 @@
 import { Link } from "react-router-dom";
 import "./Header.scss";
 
-export default function Header() {
+type Props = {
+  isLoading: boolean
+}
+
+export default function Header(props: Props) {
   return (
     <div className="header">
       <Link to="/rent">
-        <button className="header__button">RENT</button>
+        <button disabled={props.isLoading} className="header__button">RENT</button>
       </Link>
       <Link to="/sell">
-        <button className="header__button">SALE</button>
+        <button disabled={props.isLoading} className="header__button">SALE</button>
       </Link>
     </div>
   );
