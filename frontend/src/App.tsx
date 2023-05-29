@@ -33,12 +33,13 @@ function App() {
   );
 
   function handlePageChange(pageNumber: number) {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    if (pageNumber !== currentPage) {
+      window.scrollTo({
+        top: 0
+      });
 
-    setCurrentPage(pageNumber);
+      setCurrentPage(pageNumber);
+    }
   }
 
   useEffect(() => {
@@ -68,7 +69,7 @@ function App() {
         {isLoading ? (
           <Loading />
         ) : propertiesToSell.length > 0 ? (
-          <div>
+          <main>
             <Routes>
               <Route path="/" element={<Navigate to="/rent" />} />
               <Route path="/rent" element={<RentListings />} />
@@ -81,7 +82,7 @@ function App() {
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
-          </div>
+          </main>
         ) : (
           <p className="no-items">No properties to show</p>
         )}

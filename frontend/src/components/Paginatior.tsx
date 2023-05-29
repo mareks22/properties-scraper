@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./Paginator.scss";
 
 type Props = {
@@ -21,11 +21,20 @@ export default function Paginator(props: Props) {
     return numbers;
   }, [props.totalItems, props.itemsPerPage]);
 
+  const isFirstRender = useRef(true);
+
   const [pageNumbers, setPageNumbers] = useState<number[]>([]);
 
   useEffect(() => {
-    setPageNumbers(allPageNumbers.slice(0, 4));
-  }, [allPageNumbers]);
+    if (isFirstRender.current) {
+      setPageNumbers(allPageNumbers.slice(0, 4));
+      isFirstRender.current = false;
+    }
+
+    if (props.currentPage === 1) {
+      setPageNumbers(allPageNumbers.slice(0, 4));
+    }
+  }, [allPageNumbers, props.currentPage]);
 
   function calcPagesToShow(clicked: number) {
     const lastPage = allPageNumbers[allPageNumbers.length - 1];
